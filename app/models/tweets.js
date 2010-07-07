@@ -310,10 +310,12 @@ Tweets.prototype.initSpazTwit = function() {
 	
 	var users = new Users(sc.app.prefs);
 	
-	this.twit = new SpazTwit(null, null, {
-		'event_mode':event_mode,
-		'timeout':1000*60
-	});
+  // this.twit = new SpazTwit(null, null, {
+  //  'event_mode':event_mode,
+  //  'timeout':1000*60
+  // });
+  
+  this.twit = new SpazTwit({auth: auth});
 
 	if (sc.app.userid) {
 		// alert('setting credentials for '+sc.app.username);

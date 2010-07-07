@@ -5,6 +5,29 @@ function StageAssistant () {
 }
 
 StageAssistant.prototype.initialize = function() {
+  SpazAuth.addService(SPAZCORE_ACCOUNT_TWITTER, {
+    authType: SPAZCORE_AUTHTYPE_OAUTH,
+    consumerKey: SPAZCORE_CONSUMERKEY_TWITTER,
+    consumerSecret: SPAZCORE_CONSUMERSECRET_TWITTER,
+    accessURL: 'https://twitter.com/oauth/access_token'
+  });
+  
+  prefs = new SpazPrefs();
+  prefs.load();
+  accts = new SpazAccounts(prefs);
+  auth = new SpazAuth(SPAZCORE_ACCOUNT_TWITTER);
+  
+  if ( !(account_id = prefs.get('account_id')) ) {
+		if(auth.authorize('spaztest', 'poopatron5000')) {
+			account_id = accts.add('spaztest', auth.save(), SPAZCORE_ACCOUNT_TWITTER).id;
+			prefs.set('account_id', account_id);
+		} else {
+			alert('could not authenticate');
+		}
+	}
+	
+	var account = accts.get(account_id);
+	auth.load(account.auth);
 	
 	sch.error('INITIALIZING EVERYTHING');
 	
